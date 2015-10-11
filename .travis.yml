@@ -12,7 +12,7 @@ script:
 - go test ./...
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_COMMIT github.com/typingincolor/go-galen/monitor/gmonitor
 addons:
-  artifacts: true
+  artifacts:
     region: eu-west-1
     bucket: typingincolor-gogalen-artifacts
     key:
