@@ -1,5 +1,6 @@
 monitor/gmonitor/monitor
 monitor/gmonitor/gmonitor
 monitor/db
+gmonitor
 .idea
 go-galen.iml
