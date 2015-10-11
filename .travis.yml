@@ -5,6 +5,9 @@ install:
   - go get github.com/Sirupsen/logrus
   - go get gopkg.in/mgo.v2
   - go get github.com/stretchr/testify/assert
+  - go get -u github.com/golang/lint/golint
 script:
+  - go vet ./...
+  - go lint ./...
   - go test ./...
   - go build github.com/typingincolor/go-galen/monitor/gmonitor
