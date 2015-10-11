@@ -11,12 +11,10 @@ script:
 - golint ./...
 - go test ./...
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_COMMIT github.com/typingincolor/go-galen/monitor/gmonitor
-deploy:
-  provider: s3
-  access_key_id: AKIAIUYJXTKMLDO6NIOQ
-  secret_access_key:
-    secure: b3xloQTD46nZg1ZSf3r3yr7gZb+KO8VO0rowk+6GKnBNEt2pU/eyQjBQE7+cWSuADBKs5vy0KOMqQTqb5rywEJhuZuV/+vNYGtWnuiNH9M6AFVe8WddPSyNEAQW5Hat7qFIC8ue3y4s93YQRcR7AjRdX4NynFtX2Rqlxa2mc+vXXQPkDO1ygYrm8pG9PFg1C/i0Fnxsal3AwrI/ojkfb3MMEqydryxwMrnmcJ/5dnv1612xZDqHLj2t6PeTOxe5YjhgLf2vdc4u3MhJDXD81Vlzsor2ucR8uxh3eHmESH/xjbR2Poxcmuy43HPU61b04i2qQIZsGUqzYBBLcb0fzrQuLQ9xRfmJDHqQ4Eo2Uly2dB6Tep+xQ2TBSsI6QzXYMfPplp4uUSLAIWxphUUu+6CV3w0BkiVGcGoaIgH9ug06mBr7oZPWDL4p2/0V5wSzPdJfWOtu8NAdiPVrr48k7tEpyiVBFTF/J4kh/dul3aTC9n5FeGCkS7Dvx/YpiMFTCN5tWYcs03dUhP3CDF2yjpXDUUgNg8/i9Q42EN2HX4yufJ2jb5loY9+QIXPU8C6gq65t/hHp5fOTuxOGHBccVogG2NHSkXwTxbTnSzGhhKkUYClw+VcSiYXW9yINrE8i2zndZmYxSzBjk8oOX6R8ywWTxsNce+1jEPi6FxoAbjMY=
-  bucket: typingincolor-gogalen-artifacts
-  on:
-    repo: typingincolor/go-galen
-    branch: development
+addons:
+  artifacts: true
+    region: eu-west-1
+    bucket: typingincolor-gogalen-artifacts
+    key: AKIAIUYJXTKMLDO6NIOQ
+    secret:
+      secure: b3xloQTD46nZg1ZSf3r3yr7gZb+KO8VO0rowk+6GKnBNEt2pU/eyQjBQE7+cWSuADBKs5vy0KOMqQTqb5rywEJhuZuV/+vNYGtWnuiNH9M6AFVe8WddPSyNEAQW5Hat7qFIC8ue3y4s93YQRcR7AjRdX4NynFtX2Rqlxa2mc+vXXQPkDO1ygYrm8pG9PFg1C/i0Fnxsal3AwrI/ojkfb3MMEqydryxwMrnmcJ/5dnv1612xZDqHLj2t6PeTOxe5YjhgLf2vdc4u3MhJDXD81Vlzsor2ucR8uxh3eHmESH/xjbR2Poxcmuy43HPU61b04i2qQIZsGUqzYBBLcb0fzrQuLQ9xRfmJDHqQ4Eo2Uly2dB6Tep+xQ2TBSsI6QzXYMfPplp4uUSLAIWxphUUu+6CV3w0BkiVGcGoaIgH9ug06mBr7oZPWDL4p2/0V5wSzPdJfWOtu8NAdiPVrr48k7tEpyiVBFTF/J4kh/dul3aTC9n5FeGCkS7Dvx/YpiMFTCN5tWYcs03dUhP3CDF2yjpXDUUgNg8/i9Q42EN2HX4yufJ2jb5loY9+QIXPU8C6gq65t/hHp5fOTuxOGHBccVogG2NHSkXwTxbTnSzGhhKkUYClw+VcSiYXW9yINrE8i2zndZmYxSzBjk8oOX6R8ywWTxsNce+1jEPi6FxoAbjMY=
