@@ -14,3 +14,4 @@ script:
 addons:
   artifacts: true
   s3_region: "eu-west-1"
+  debug: true
