@@ -13,5 +13,5 @@ script:
   - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_COMMIT github.com/typingincolor/go-galen/monitor/gmonitor
 addons:
   artifacts: true
-  region: "eu-west-1"
+  s3_region: "eu-west-1"
   debug: true
