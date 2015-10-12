@@ -1,34 +1,26 @@
 language: go
 go:
 - 1.5
-
 env:
 - TEST_MONGO="true"
-
 services:
 - mongodb
-
+before_install:
+- go get github.com/axw/gocov/gocov
+- go get github.com/mattn/goveralls
+- go get golang.org/x/tools/cmd/cover
 install:
 - go get github.com/Sirupsen/logrus
 - go get gopkg.in/mgo.v2
 - go get github.com/stretchr/testify/assert
 - go get -u github.com/golang/lint/golint
-
-before_install:
-- go get github.com/axw/gocov/gocov
-- go get github.com/mattn/goveralls
-- go get golang.org/x/tools/cmd/cover
-
 before_script:
-- mongo monitors --eval 'db.apis.insert({"url":"http://localhost:8080/1", "method": "GET"})'
-- mongo monitors --eval 'db.apis.insert({"url":"http://localhost:8080/2", "method": "GET"})'
-
+- ./insert_test_data.bash
 script:
 - go vet ./...
 - golint ./...
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
 - ./test.bash
-
 addons:
   artifacts:
     s3_region: eu-west-1
