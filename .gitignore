@@ -1,0 +1,4 @@
+.idea
+*.iml
+monitor/db
+monitor/gmonitor/gmonitor
