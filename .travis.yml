@@ -3,7 +3,7 @@ go:
 - 1.5
 
 env:
-- TEST_MONGO=true
+- TEST_MONGO="true"
 
 services:
 - mongodb
