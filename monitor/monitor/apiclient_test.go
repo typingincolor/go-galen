@@ -38,7 +38,7 @@ func TestItHandlesAnUnknownHost(t *testing.T) {
 }
 
 func TestItCanCallAnUrl(t *testing.T) {
-	res, err := client.Call(mongo.HealthCheck{Method: "GET", URL: "http://echo.jsontest.com/key/value/one/two"})
+	res, err := client.Call(mongo.HealthCheck{Method: "GET", URL: "http://jsonplaceholder.typicode.com/posts/1"})
 
 	assert.Nil(t, err)
 	assert.Equal(t, 200, res.StatusCode)
