@@ -4,3 +4,4 @@ monitor/db
 gmonitor
 .idea
 go-galen.iml
+test-output

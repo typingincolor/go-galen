@@ -9,7 +9,8 @@ install:
 script:
 - go vet ./...
 - golint ./...
-- go test ./...
+- go test -coverprofile=monitor.cov ./monitor/monitor
+- go tool cover -html=monitor.cov -o monitor.html
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
 addons:
   artifacts:

@@ -21,10 +21,10 @@ func TestItFailsWithUnknownHttpMethod(t *testing.T) {
 }
 
 func TestItHandlesAnUnknownHost(t *testing.T) {
-	_, err := client.Call(mongo.HealthCheck{Method: "GET", URL: "http://invalid.invalid"})
+	_, err := client.Call(mongo.HealthCheck{Method: "GET", URL: "http://999.999.999.999"})
 
 	if assert.Error(t, err, "An error was expected") {
-		assert.Contains(t, err.Error(), "Get http://invalid.invalid: dial tcp: lookup invalid.invalid")
+		assert.Contains(t, err.Error(), "Get http://999.999.999.999: dial tcp: lookup 999.999.999.999")
 		assert.Contains(t, err.Error(), "no such host")
 	}
 }
