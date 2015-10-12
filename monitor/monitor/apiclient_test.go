@@ -25,7 +25,6 @@ func TestItHandlesAnUnknownHost(t *testing.T) {
 
 	if assert.Error(t, err, "An error was expected") {
 		assert.Contains(t, err.Error(), "Get http://999.999.999.999: dial tcp: lookup 999.999.999.999")
-		assert.Contains(t, err.Error(), "no such host")
 	}
 }
 
