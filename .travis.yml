@@ -1,6 +1,8 @@
 language: go
 go:
 - 1.5
+services:
+- mongodb
 install:
 - go get github.com/Sirupsen/logrus
 - go get gopkg.in/mgo.v2
