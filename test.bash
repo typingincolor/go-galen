@@ -12,6 +12,8 @@ do
             fi
 fi
 done
-goveralls -coverprofile=acc.out -service=travis-ci $COVERALLS
+goveralls -coverprofile=acc.out -service=travis-ci $COVERALLS; RESULT=$?
 rm -rf ./profile.out
 rm -rf ./acc.out
+
+exit $RESULT
