@@ -14,10 +14,8 @@ before_install:
 script:
 - go vet ./...
 - golint ./...
-- go test -coverprofile=monitor.cov ./monitor/monitor
-- go tool cover -html=monitor.cov -o monitor.html
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
-- $HOME/gopath/bin/goveralls -service=travis-ci
+- ./test.bash
 addons:
   artifacts:
     s3_region: eu-west-1
