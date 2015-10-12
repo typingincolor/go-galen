@@ -42,3 +42,8 @@ func (client *apiClient) Call(monitor mongo.HealthCheck) (Result, error) {
 func HTTPAPIClient() APIClient {
 	return &apiClient{}
 }
+
+// DummyAPIClient - returns a dummy API client
+func DummyAPIClient() APIClient {
+	return &dummyAPIClient{}
+}

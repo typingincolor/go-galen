@@ -10,6 +10,15 @@ import (
 
 var client = monitor.HTTPAPIClient()
 
+func TestDummyApiClient(t *testing.T) {
+	dummy := monitor.DummyAPIClient()
+
+	res, err := dummy.Call(mongo.HealthCheck{Method: "GET", URL: "http://999.999.999.999"})
+
+	assert.Nil(t, err)
+	assert.Equal(t, 200, res.StatusCode)
+}
+
 func TestItFailsWithUnknownHttpMethod(t *testing.T) {
 	expectedError := errors.New("API client has not implemented method POST")
 
