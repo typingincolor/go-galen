@@ -6,12 +6,18 @@ install:
 - go get gopkg.in/mgo.v2
 - go get github.com/stretchr/testify/assert
 - go get -u github.com/golang/lint/golint
+
+before_install:
+- go get github.com/axw/gocov/gocov
+- go get github.com/mattn/goveralls
+- if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
 script:
 - go vet ./...
 - golint ./...
 - go test -coverprofile=monitor.cov ./monitor/monitor
 - go tool cover -html=monitor.cov -o monitor.html
 - go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
+- $HOME/gopath/bin/goveralls -service=travis-ci
 addons:
   artifacts:
     s3_region: eu-west-1
