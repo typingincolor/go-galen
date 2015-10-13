@@ -9,6 +9,7 @@ import (
 // Result of a check
 type Result struct {
 	StatusCode int
+	Elapsed    time.Duration
 }
 
 type monitor struct {
