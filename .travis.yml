@@ -11,9 +11,6 @@ install:
 - go get golang.org/x/tools/cmd/cover
 - go get github.com/golang/lint/golint
 - go get github.com/tools/godep
-cache:
-  directories:
-    - $HOME/gopath/src
 before_script:
 - ./monitor/insert_test_data.bash
 script:
