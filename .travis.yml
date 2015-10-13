@@ -13,6 +13,7 @@ before_install:
 install:
 - go get github.com/Sirupsen/logrus
 - go get gopkg.in/mgo.v2
+- go get github.com/influxdb/influxdb/client
 - go get github.com/stretchr/testify/assert
 before_script:
 - ./insert_test_data.bash
