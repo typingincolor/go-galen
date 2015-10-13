@@ -9,37 +9,19 @@ import (
 	"time"
 
 	"flag"
-	"fmt"
-	"github.com/influxdb/influxdb/client"
 	"github.com/typingincolor/go-galen/monitor/mongo"
 	"github.com/typingincolor/go-galen/monitor/monitor"
-	"net/url"
 )
 
 func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
-const (
-	influxHost = "localhost"
-	influxPort = 8086
-)
-
 func main() {
-	var mongoHost = flag.String("mongodbhost", "localhost", "Mongodb hostname")
+	var mongoHost = flag.String("mongo.host", "localhost", "Mongodb hostname")
+	var influxHost = flag.String("influx.host", "localhost", "Influxdb hostname")
+	var influxPort = flag.Int("influx.port", 8086, "Influxdb port")
 	flag.Parse()
-
-	influxURL := fmt.Sprintf("http://%s:%d", influxHost, influxPort)
-
-	log.Info(influxURL)
-	u, err := url.Parse(influxURL)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	influxConf := client.Config{
-		URL: *u,
-	}
 
 	var stoplock sync.Mutex
 	stop := false
@@ -64,7 +46,7 @@ func main() {
 	// start things
 	monitorchan := make(chan monitor.Result)
 
-	saveMonitorResultStoppedChan := monitor.InfluxSaver(monitorchan, influxConf).Save()
+	saveMonitorResultStoppedChan := monitor.InfluxSaver(monitorchan, *influxHost, *influxPort).Save()
 	monitor := monitor.DummyMonitor(stopChan, monitorchan, database)
 	monitorStoppedChan := monitor.Start()
 

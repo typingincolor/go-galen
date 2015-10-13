@@ -31,7 +31,7 @@ func (d *db) dial() error {
 
 func (d *db) Close() {
 	d.session.Close()
-	log.Info("closed database connection")
+	log.Info("closed mongodb connection")
 }
 
 func (d *db) GetMonitors() ([]HealthCheck, error) {

@@ -2,7 +2,6 @@ package monitor
 
 import (
 	log "github.com/Sirupsen/logrus"
-	"github.com/influxdb/influxdb/client"
 	"github.com/typingincolor/go-galen/monitor/influx"
 )
 
@@ -48,12 +47,14 @@ func (influxsaver *influxsaver) Save() <-chan struct{} {
 
 // ConsoleSaver - write the output of a check to the console
 func ConsoleSaver(monitorchan <-chan Result) Saver {
+	log.Info("Using ConsoleSaver")
 	return &consolesaver{monitorchan: monitorchan}
 }
 
 // InfluxSaver - save result to influxdb
-func InfluxSaver(monitorchan <-chan Result, cfg client.Config) Saver {
-	repo := influx.HealthCheckRepo(cfg)
+func InfluxSaver(monitorchan <-chan Result, hostname string, port int) Saver {
+	log.Info("Using InfluxSaver")
+	repo := influx.HealthCheckRepo(hostname, port)
 
 	return &influxsaver{monitorchan: monitorchan, repo: repo}
 }

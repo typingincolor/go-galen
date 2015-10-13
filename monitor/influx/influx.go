@@ -4,12 +4,18 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/influxdb/influxdb/client"
 	"time"
+	"fmt"
+	"net/url"
 )
 
 const (
 	database        = "galen"
 	retentionPolicy = "default"
 )
+
+type Configuration struct {
+	URL string
+}
 
 // HealthCheck representation in InfluxDB
 type HealthCheck struct {
@@ -50,7 +56,14 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 }
 
 // HealthCheckRepository - create one...
-func HealthCheckRepo(cfg client.Config) HealthCheckRepository {
-	con, _ := client.NewClient(cfg)
+func HealthCheckRepo(hostname string, port int) HealthCheckRepository {
+	influxURL := fmt.Sprintf("http://%s:%d", hostname, port)
+
+	log.WithField("url", influxURL).Info("Connecting to influxdb")
+	u, err := url.Parse(influxURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	con, _ := client.NewClient(client.Config{URL: *u})
 	return &healthCheckRepository{connection: con}
 }

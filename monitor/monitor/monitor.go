@@ -25,7 +25,7 @@ type Monitor interface {
 
 // Start a monitor
 func (m *monitor) Start() <-chan struct{} {
-	log.Info("starting monitors")
+	log.Info("starting monitor")
 	stoppedchan := make(chan struct{}, 1)
 
 	go func() {
@@ -58,7 +58,7 @@ func (m *monitor) loadMonitors() ([]mongo.HealthCheck, error) {
 }
 
 func (m *monitor) monitor() {
-	log.Debug("running monitors")
+	log.Debug("monitoring...")
 	monitors, err := m.loadMonitors()
 
 	if err != nil {
