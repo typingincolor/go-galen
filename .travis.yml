@@ -12,7 +12,7 @@ install:
 - go get github.com/golang/lint/golint
 - go get github.com/tools/godep
 before_script:
-- ./insert_test_data.bash
+- ./monitor/insert_test_data.bash
 script:
 - go vet ./...
 - golint ./...
