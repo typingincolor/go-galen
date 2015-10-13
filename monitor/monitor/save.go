@@ -37,7 +37,7 @@ func (influxsaver *influxsaver) Save() <-chan struct{} {
 
 	go func() {
 		for monitor := range influxsaver.monitorchan {
-			influxsaver.repo.Save(influx.HealthCheck{StatusCode: monitor.StatusCode, Elapsed: monitor.Elapsed})
+			influxsaver.repo.Save(influx.HealthCheck{ID: monitor.ID, StatusCode: monitor.StatusCode, Elapsed: monitor.Elapsed})
 		}
 		stopchan <- struct{}{}
 	}()

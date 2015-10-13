@@ -15,6 +15,7 @@ const (
 
 // HealthCheck representation in InfluxDB
 type HealthCheck struct {
+	ID         string
 	StatusCode int
 	Elapsed    time.Duration
 }
@@ -29,9 +30,12 @@ type healthCheckRepository struct {
 }
 
 func (repo *healthCheckRepository) Save(h HealthCheck) error {
-	log.WithFields(log.Fields{"status_code": h.StatusCode, "elapsed": h.Elapsed}).Debug("saving to influx")
+	log.WithFields(log.Fields{"id": h.ID, "status_code": h.StatusCode, "elapsed": h.Elapsed}).Debug("saving to influx")
 	point := client.Point{
 		Measurement: "healthcheck",
+		Tags: map[string]string{
+			"monitor": h.ID,
+		},
 		Fields: map[string]interface{}{
 			"status_code": h.StatusCode,
 			"elapsed":     h.Elapsed.Seconds() * 1e3,

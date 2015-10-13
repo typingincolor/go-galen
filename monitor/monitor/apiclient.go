@@ -25,7 +25,7 @@ func (m *dummyAPIClient) Call(monitor mongo.HealthCheck) (Result, error) {
 type apiClient struct{}
 
 func (client *apiClient) Call(monitor mongo.HealthCheck) (Result, error) {
-	log.WithFields(log.Fields{"url": monitor.URL, "method": monitor.Method}).Debug("calling")
+	log.WithFields(log.Fields{"id": monitor.ID.Hex(), "url": monitor.URL, "method": monitor.Method}).Debug("calling")
 	if strings.ToUpper(monitor.Method) == "GET" {
 		start := time.Now()
 		resp, err := http.Get(monitor.URL)
@@ -35,7 +35,7 @@ func (client *apiClient) Call(monitor mongo.HealthCheck) (Result, error) {
 		}
 		defer resp.Body.Close()
 
-		return Result{StatusCode: resp.StatusCode, Elapsed: time.Since(start)}, nil
+		return Result{ID: monitor.ID.Hex(), StatusCode: resp.StatusCode, Elapsed: time.Since(start)}, nil
 	}
 
 	return Result{}, fmt.Errorf("API client has not implemented method %s", monitor.Method)

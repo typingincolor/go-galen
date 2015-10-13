@@ -3,6 +3,7 @@ package mongo
 import (
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type db struct {
@@ -12,6 +13,7 @@ type db struct {
 
 // HealthCheck to run
 type HealthCheck struct {
+	ID     bson.ObjectId `bson:"_id" json:"id"`
 	URL    string
 	Method string
 }

@@ -8,6 +8,7 @@ import (
 
 // Result of a check
 type Result struct {
+	ID         string
 	StatusCode int
 	Elapsed    time.Duration
 }
