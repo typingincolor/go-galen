@@ -47,7 +47,7 @@ func main() {
 	monitorchan := make(chan monitor.Result)
 
 	saveMonitorResultStoppedChan := monitor.InfluxSaver(monitorchan, *influxHost, *influxPort).Save()
-	monitor := monitor.DummyMonitor(stopChan, monitorchan, database)
+	monitor := monitor.HTTPMonitor(stopChan, monitorchan, database)
 	monitorStoppedChan := monitor.Start()
 
 	go func() {

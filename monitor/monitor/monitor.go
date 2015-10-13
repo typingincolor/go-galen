@@ -48,9 +48,14 @@ func (m *monitor) Start() <-chan struct{} {
 	return stoppedchan
 }
 
-// DummyMonitor that writes a canned result to the console
+// DummyMonitor that writes a canned result selected result Saver
 func DummyMonitor(stopChan <-chan struct{}, monitorchan chan<- Result, database mongo.Database) Monitor {
-	return &monitor{runner: &dummyAPIClient{}, stopchan: stopChan, monitorchan: monitorchan, db: database}
+	return &monitor{runner: DummyAPIClient(), stopchan: stopChan, monitorchan: monitorchan, db: database}
+}
+
+// HTTPMonitor that uses a real API client to get the results
+func HTTPMonitor(stopChan <-chan struct{}, monitorchan chan<- Result, database mongo.Database) Monitor {
+	return &monitor{runner: HTTPAPIClient(), stopchan: stopChan, monitorchan: monitorchan, db: database}
 }
 
 func (m *monitor) loadMonitors() ([]mongo.HealthCheck, error) {

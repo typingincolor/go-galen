@@ -24,6 +24,7 @@ func (m *dummyAPIClient) Call(monitor mongo.HealthCheck) (Result, error) {
 type apiClient struct{}
 
 func (client *apiClient) Call(monitor mongo.HealthCheck) (Result, error) {
+	log.WithFields(log.Fields{"url": monitor.URL, "method": monitor.Method}).Debug("calling")
 	if strings.ToUpper(monitor.Method) == "GET" {
 		resp, err := http.Get(monitor.URL)
 

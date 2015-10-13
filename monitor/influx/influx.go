@@ -1,11 +1,11 @@
 package influx
 
 import (
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/influxdb/influxdb/client"
-	"time"
-	"fmt"
 	"net/url"
+	"time"
 )
 
 const (
