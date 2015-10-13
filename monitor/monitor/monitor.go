@@ -1,10 +1,12 @@
 package monitor
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"github.com/typingincolor/go-galen/monitor/mongo"
+	log "gopkg.in/inconshreveable/log15.v2"
 	"time"
 )
+
+var logger = log.New(log.Ctx{"module": "monitor"})
 
 // Result of a check
 type Result struct {
@@ -27,7 +29,7 @@ type Monitor interface {
 
 // Start a monitor
 func (m *monitor) Start() <-chan struct{} {
-	log.Info("starting monitor")
+	logger.Info("starting monitor")
 	stoppedchan := make(chan struct{}, 1)
 
 	go func() {
@@ -38,11 +40,11 @@ func (m *monitor) Start() <-chan struct{} {
 		for {
 			select {
 			case <-m.stopchan:
-				log.Info("stopping monitor...")
+				logger.Info("stopping monitor...")
 				return
 			default:
 				m.monitor()
-				log.Debug("  (waiting)")
+				logger.Debug("  (waiting)")
 				time.Sleep(10 * time.Second)
 			}
 		}
@@ -65,11 +67,11 @@ func (m *monitor) loadMonitors() ([]mongo.HealthCheck, error) {
 }
 
 func (m *monitor) monitor() {
-	log.Debug("monitoring...")
+	logger.Debug("monitoring...")
 	monitors, err := m.loadMonitors()
 
 	if err != nil {
-		log.WithError(err).Fatal("failed to load monitors")
+		logger.Error("failed to load monitors", log.Ctx{"error": err})
 		return
 	}
 

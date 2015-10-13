@@ -2,8 +2,8 @@ package influx
 
 import (
 	"fmt"
-	log "github.com/Sirupsen/logrus"
 	"github.com/influxdb/influxdb/client"
+	log "gopkg.in/inconshreveable/log15.v2"
 	"net/url"
 	"time"
 )
@@ -12,6 +12,8 @@ const (
 	database        = "galen"
 	retentionPolicy = "default"
 )
+
+var logger = log.New(log.Ctx{"module": "influx"})
 
 // HealthCheck representation in InfluxDB
 type HealthCheck struct {
@@ -30,7 +32,7 @@ type healthCheckRepository struct {
 }
 
 func (repo *healthCheckRepository) Save(h HealthCheck) error {
-	log.WithFields(log.Fields{"id": h.ID, "status_code": h.StatusCode, "elapsed": h.Elapsed}).Debug("saving to influx")
+	logger.Debug("saving to influx", log.Ctx{"id": h.ID, "status_code": h.StatusCode, "elapsed": h.Elapsed})
 	point := client.Point{
 		Measurement: "healthcheck",
 		Tags: map[string]string{
@@ -51,7 +53,7 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 	}
 
 	if _, err := repo.connection.Write(bps); err != nil {
-		log.WithError(err).Fatal("unable to write to influxdb")
+		logger.Error("unable to write to influxdb", log.Ctx{"error": err})
 	}
 
 	return nil
@@ -61,10 +63,10 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 func HealthCheckRepo(hostname string, port int) HealthCheckRepository {
 	influxURL := fmt.Sprintf("http://%s:%d", hostname, port)
 
-	log.WithField("url", influxURL).Info("Connecting to influxdb")
+	logger.Info("Connecting to influxdb", log.Ctx{"url": influxURL})
 	u, err := url.Parse(influxURL)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("error parsing influx url", log.Ctx{"error": err})
 	}
 	con, _ := client.NewClient(client.Config{URL: *u})
 	return &healthCheckRepository{connection: con}
