@@ -73,7 +73,9 @@ func (m *monitor) monitor() {
 	}
 
 	for _, mon := range monitors {
-		res, _ := m.runner.Call(mon)
-		m.monitorchan <- res
+		go func(mon mongo.HealthCheck) {
+			res, _ := m.runner.Call(mon)
+			m.monitorchan <- res
+		}(mon)
 	}
 }
