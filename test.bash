@@ -2,7 +2,7 @@
 
 ERROR=0
 echo "mode: set" > acc.out
-for Dir in $(find ./* -maxdepth 10 -type d -prune -o -name "Godeps");
+for Dir in $(find ./* -maxdepth 10 -type d -path ./Godeps -prune -o -print);
 do
         if ls $Dir/*.go &> /dev/null;
         then
