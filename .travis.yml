@@ -9,13 +9,14 @@ install:
 - go get github.com/axw/gocov/gocov
 - go get github.com/mattn/goveralls
 - go get golang.org/x/tools/cmd/cover
-- go get -u github.com/golang/lint/golint
+- go get github.com/golang/lint/golint
 - go get github.com/tools/godep
 before_script:
 - ./insert_test_data.bash
 script:
 - go vet ./...
 - golint ./...
+- cd monitor
 - godep go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
 - ./test.bash
 addons:
