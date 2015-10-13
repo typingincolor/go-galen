@@ -13,10 +13,6 @@ const (
 	retentionPolicy = "default"
 )
 
-type Configuration struct {
-	URL string
-}
-
 // HealthCheck representation in InfluxDB
 type HealthCheck struct {
 	StatusCode int
@@ -55,7 +51,7 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 	return nil
 }
 
-// HealthCheckRepository - create one...
+// HealthCheckRepo - create one...
 func HealthCheckRepo(hostname string, port int) HealthCheckRepository {
 	influxURL := fmt.Sprintf("http://%s:%d", hostname, port)
 
