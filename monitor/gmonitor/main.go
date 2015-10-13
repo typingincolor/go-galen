@@ -1,7 +1,7 @@
 package main
 
 import (
-	log "gopkg.in/inconshreveable/log15.v2"
+	"gopkg.in/inconshreveable/log15.v2"
 	"os"
 	"os/signal"
 	"sync"
@@ -13,7 +13,7 @@ import (
 	"github.com/typingincolor/go-galen/monitor/monitor"
 )
 
-var logger = log.New(log.Ctx{"module": "main"})
+var logger = log15.New(log15.Ctx{"module": "main"})
 
 func main() {
 	var mongoHost = flag.String("mongo.host", "localhost", "Mongodb hostname")
@@ -39,7 +39,8 @@ func main() {
 
 	database, err := mongo.Db(*mongoHost)
 	if err != nil {
-		logger.Error("failed to dial MongoDB", log.Ctx{"error": err})
+		logger.Crit("failed to dial MongoDB", log15.Ctx{"error": err})
+		os.Exit(1)
 	}
 	defer database.Close()
 

@@ -2,7 +2,7 @@ package monitor
 
 import (
 	"github.com/typingincolor/go-galen/monitor/influx"
-	log "gopkg.in/inconshreveable/log15.v2"
+	"gopkg.in/inconshreveable/log15.v2"
 )
 
 // Saver saves a result
@@ -24,7 +24,7 @@ func (consolesaver *consolesaver) Save() <-chan struct{} {
 
 	go func() {
 		for monitor := range consolesaver.monitorchan {
-			logger.Debug("saving", log.Ctx{"status_code": monitor.StatusCode})
+			logger.Debug("saving", log15.Ctx{"status_code": monitor.StatusCode})
 		}
 		stopchan <- struct{}{}
 	}()

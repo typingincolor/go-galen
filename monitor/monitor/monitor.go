@@ -2,11 +2,11 @@ package monitor
 
 import (
 	"github.com/typingincolor/go-galen/monitor/mongo"
-	log "gopkg.in/inconshreveable/log15.v2"
+	"gopkg.in/inconshreveable/log15.v2"
 	"time"
 )
 
-var logger = log.New(log.Ctx{"module": "monitor"})
+var logger = log15.New(log15.Ctx{"module": "monitor"})
 
 // Result of a check
 type Result struct {
@@ -71,7 +71,7 @@ func (m *monitor) monitor() {
 	monitors, err := m.loadMonitors()
 
 	if err != nil {
-		logger.Error("failed to load monitors", log.Ctx{"error": err})
+		logger.Error("failed to load monitors", log15.Ctx{"error": err})
 		return
 	}
 

@@ -1,12 +1,12 @@
 package mongo
 
 import (
-	log "gopkg.in/inconshreveable/log15.v2"
+	"gopkg.in/inconshreveable/log15.v2"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
-var logger = log.New(log.Ctx{"module": "mongo"})
+var logger = log15.New(log15.Ctx{"module": "mongo"})
 
 type db struct {
 	host    string
@@ -28,7 +28,7 @@ type Database interface {
 
 func (d *db) dial() error {
 	var err error
-	logger.Info("dialing mongodb", log.Ctx{"mongo_host": d.host})
+	logger.Info("dialing mongodb", log15.Ctx{"mongo_host": d.host})
 	d.session, err = mgo.Dial(d.host)
 	return err
 }
