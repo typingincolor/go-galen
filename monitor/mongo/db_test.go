@@ -1,9 +1,10 @@
 package mongo_test
+
 import (
-	"testing"
-	"github.com/typingincolor/go-galen/monitor/mongo"
 	"github.com/stretchr/testify/assert"
+	"github.com/typingincolor/go-galen/monitor/mongo"
 	"os"
+	"testing"
 )
 
 func TestDial(t *testing.T) {
