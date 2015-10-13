@@ -1,27 +1,57 @@
 package main
 
 import (
-	"gopkg.in/inconshreveable/log15.v2"
+	"log"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
+	"io"
 
 	"flag"
 	"github.com/typingincolor/go-galen/monitor/mongo"
 	"github.com/typingincolor/go-galen/monitor/monitor"
 )
 
-var logger = log15.New(log15.Ctx{"module": "main"})
+var (
+    Trace   *log.Logger
+    Info    *log.Logger
+    Warning *log.Logger
+    Error   *log.Logger
+)
+
+func Init(
+    traceHandle io.Writer,
+    infoHandle io.Writer,
+    warningHandle io.Writer,
+    errorHandle io.Writer) {
+
+    Trace = log.New(traceHandle,
+        "TRACE: ",
+        log.Ldate|log.Ltime|log.Lshortfile)
+
+    Info = log.New(infoHandle,
+        "INFO: ",
+        log.Ldate|log.Ltime|log.Lshortfile)
+
+    Warning = log.New(warningHandle,
+        "WARNING: ",
+        log.Ldate|log.Ltime|log.Lshortfile)
+
+    Error = log.New(errorHandle,
+        "ERROR: ",
+        log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 func main() {
+	Init(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 	var mongoHost = flag.String("mongo.host", "localhost", "Mongodb hostname")
 	var influxHost = flag.String("influx.host", "localhost", "Influxdb hostname")
 	var influxPort = flag.Int("influx.port", 8086, "Influxdb port")
 	flag.Parse()
 
-	logger.Info("Starting...")
+	Info.Println("Starting...")
 
 	var stoplock sync.Mutex
 	stop := false
@@ -32,14 +62,14 @@ func main() {
 		stoplock.Lock()
 		stop = true
 		stoplock.Unlock()
-		logger.Info("Stopping...")
+		Info.Println("Stopping...")
 		stopChan <- struct{}{}
 	}()
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 
 	database, err := mongo.Db(*mongoHost)
 	if err != nil {
-		logger.Crit("failed to dial MongoDB", log15.Ctx{"error": err})
+		Error.Println("failed to dial MongoDB", err)
 		os.Exit(1)
 	}
 	defer database.Close()
