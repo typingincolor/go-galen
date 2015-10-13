@@ -6,7 +6,7 @@ for Dir in $(find ./* -maxdepth 10 -type d );
 do
         if ls $Dir/*.go &> /dev/null;
         then
-            go test -coverprofile=profile.out $Dir
+            godep go test -coverprofile=profile.out $Dir
             if [ "$?" -ne "0" ]
             then
                 ERROR=1

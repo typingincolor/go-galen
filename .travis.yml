@@ -5,22 +5,18 @@ env:
 - TEST_MONGO="true"
 services:
 - mongodb
-before_install:
+install:
 - go get github.com/axw/gocov/gocov
 - go get github.com/mattn/goveralls
 - go get golang.org/x/tools/cmd/cover
 - go get -u github.com/golang/lint/golint
-install:
-- go get gopkg.in/inconshreveable/log15.v2
-- go get gopkg.in/mgo.v2
-- go get github.com/influxdb/influxdb/client
-- go get github.com/stretchr/testify/assert
+- go get github.com/tools/godep
 before_script:
 - ./insert_test_data.bash
 script:
 - go vet ./...
 - golint ./...
-- go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
+- godep go build -o gmonitor.$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER github.com/typingincolor/go-galen/monitor/gmonitor
 - ./test.bash
 addons:
   artifacts:
