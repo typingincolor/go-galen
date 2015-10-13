@@ -53,7 +53,7 @@ func ConsoleSaver(monitorchan <-chan Result) Saver {
 
 // InfluxSaver - save result to influxdb
 func InfluxSaver(monitorchan <-chan Result, cfg client.Config) Saver {
-	repo := influx.InfluxHealthCheckRepository(cfg)
+	repo := influx.HealthCheckRepo(cfg)
 
 	return &influxsaver{monitorchan: monitorchan, repo: repo}
 }

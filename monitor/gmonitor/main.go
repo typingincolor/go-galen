@@ -21,18 +21,18 @@ func init() {
 }
 
 const (
-	InfluxHost = "localhost"
-	InfluxPort = 8086
+	influxHost = "localhost"
+	influxPort = 8086
 )
 
 func main() {
 	var mongoHost = flag.String("mongodbhost", "localhost", "Mongodb hostname")
 	flag.Parse()
 
-	influxUrl := fmt.Sprintf("http://%s:%d", InfluxHost, InfluxPort)
+	influxURL := fmt.Sprintf("http://%s:%d", influxHost, influxPort)
 
-	log.Info(influxUrl)
-	u, err := url.Parse(influxUrl)
+	log.Info(influxURL)
+	u, err := url.Parse(influxURL)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -7,20 +7,22 @@ import (
 )
 
 const (
-	Database        = "galen"
-	RetentionPolicy = "default"
+	database        = "galen"
+	retentionPolicy = "default"
 )
 
+// HealthCheck representation in InfluxDB
 type HealthCheck struct {
 	StatusCode int
 }
 
-type healthCheckRepository struct {
-	connection *client.Client
-}
-
+// HealthCheckRepository interface
 type HealthCheckRepository interface {
 	Save(HealthCheck) error
+}
+
+type healthCheckRepository struct {
+	connection *client.Client
 }
 
 func (repo *healthCheckRepository) Save(h HealthCheck) error {
@@ -36,8 +38,8 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 
 	bps := client.BatchPoints{
 		Points:          []client.Point{point},
-		Database:        Database,
-		RetentionPolicy: RetentionPolicy,
+		Database:        database,
+		RetentionPolicy: retentionPolicy,
 	}
 
 	if _, err := repo.connection.Write(bps); err != nil {
@@ -47,7 +49,8 @@ func (repo *healthCheckRepository) Save(h HealthCheck) error {
 	return nil
 }
 
-func InfluxHealthCheckRepository(cfg client.Config) HealthCheckRepository {
+// HealthCheckRepository - create one...
+func HealthCheckRepo(cfg client.Config) HealthCheckRepository {
 	con, _ := client.NewClient(cfg)
 	return &healthCheckRepository{connection: con}
 }
