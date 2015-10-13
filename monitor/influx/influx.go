@@ -33,7 +33,7 @@ type healthCheckRepository struct {
 }
 
 func (repo *healthCheckRepository) Save(h HealthCheck) error {
-	logger.Debug("saving to influx", log15.Ctx{"id": h.ID, "status_code": h.StatusCode, "elapsed": h.Elapsed})
+	logger.Debug("saving to influx", log15.Ctx{"point": h})
 	point := client.Point{
 		Measurement: "healthcheck",
 		Tags: map[string]string{
