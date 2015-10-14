@@ -35,7 +35,7 @@ type healthCheckRepository struct {
 }
 
 func (repo *healthCheckRepository) Save(h HealthCheck) error {
-	log.Printf("saving to influx point: %v", h)
+	log.Printf("saving to influx point: %+v", h)
 	point := client.Point{
 		Measurement: "healthcheck",
 		Tags: map[string]string{
