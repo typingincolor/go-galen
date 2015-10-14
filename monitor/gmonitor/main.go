@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gopkg.in/inconshreveable/log15.v2"
+	"log"
 	"os"
 	"os/signal"
 	"sync"
@@ -13,7 +13,9 @@ import (
 	"github.com/typingincolor/go-galen/monitor/monitor"
 )
 
-var logger = log15.New(log15.Ctx{"module": "main"})
+func init() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+}
 
 func main() {
 	var mongoHost = flag.String("mongo.host", "localhost", "Mongodb hostname")
@@ -21,7 +23,7 @@ func main() {
 	var influxPort = flag.Int("influx.port", 8086, "Influxdb port")
 	flag.Parse()
 
-	logger.Info("Starting...")
+	log.Println("Starting...")
 
 	var stoplock sync.Mutex
 	stop := false
@@ -32,15 +34,14 @@ func main() {
 		stoplock.Lock()
 		stop = true
 		stoplock.Unlock()
-		logger.Info("Stopping...")
+		log.Println("Stopping...")
 		stopChan <- struct{}{}
 	}()
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 
 	database, err := mongo.Db(*mongoHost)
 	if err != nil {
-		logger.Crit("failed to dial MongoDB", log15.Ctx{"error": err})
-		os.Exit(1)
+		log.Fatalln("failed to dial MongoDB:", err)
 	}
 	defer database.Close()
 

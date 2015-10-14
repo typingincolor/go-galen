@@ -2,11 +2,13 @@ package monitor
 
 import (
 	"github.com/typingincolor/go-galen/monitor/mongo"
-	"gopkg.in/inconshreveable/log15.v2"
+	"log"
 	"time"
 )
 
-var logger = log15.New(log15.Ctx{"module": "monitor"})
+func init() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+}
 
 // Result of a check
 type Result struct {
@@ -29,7 +31,7 @@ type Monitor interface {
 
 // Start a monitor
 func (m *monitor) Start() <-chan struct{} {
-	logger.Info("starting monitor")
+	log.Println("starting monitor")
 	stoppedchan := make(chan struct{}, 1)
 
 	go func() {
@@ -40,11 +42,11 @@ func (m *monitor) Start() <-chan struct{} {
 		for {
 			select {
 			case <-m.stopchan:
-				logger.Info("stopping monitor...")
+				log.Println("stopping monitor...")
 				return
 			default:
 				m.monitor()
-				logger.Debug("  (waiting)")
+				log.Println("  (waiting)")
 				time.Sleep(10 * time.Second)
 			}
 		}
@@ -67,11 +69,11 @@ func (m *monitor) loadMonitors() ([]mongo.HealthCheck, error) {
 }
 
 func (m *monitor) monitor() {
-	logger.Debug("monitoring...")
+	log.Println("monitoring...")
 	monitors, err := m.loadMonitors()
 
 	if err != nil {
-		logger.Error("failed to load monitors", log15.Ctx{"error": err})
+		log.Println("failed to load monitors", err)
 		return
 	}
 

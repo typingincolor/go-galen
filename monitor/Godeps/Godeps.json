@@ -30,11 +30,6 @@
 			"Rev": "f3960ab1f9664ecc4e27c78af27cc9063d745a43"
 		},
 		{
-			"ImportPath": "gopkg.in/inconshreveable/log15.v2",
-			"Comment": "v2.11",
-			"Rev": "b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f"
-		},
-		{
 			"ImportPath": "gopkg.in/mgo.v2",
 			"Comment": "r2015.10.05",
 			"Rev": "f402e3a216db333ae6b3ba68b9152a34a0bc6984"

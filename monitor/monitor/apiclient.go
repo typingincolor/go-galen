@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/typingincolor/go-galen/monitor/mongo"
-	"gopkg.in/inconshreveable/log15.v2"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -18,14 +18,14 @@ type APIClient interface {
 type dummyAPIClient struct{}
 
 func (m *dummyAPIClient) Call(monitor mongo.HealthCheck) (Result, error) {
-	logger.Debug("calling", log15.Ctx{"id": monitor.ID.Hex()})
+	log.Printf("calling id: %s", monitor.ID.Hex())
 	return Result{StatusCode: 200}, nil
 }
 
 type apiClient struct{}
 
 func (client *apiClient) Call(monitor mongo.HealthCheck) (Result, error) {
-	logger.Debug("calling", log15.Ctx{"id": monitor.ID.Hex(), "url": monitor.URL})
+	log.Printf("calling id: %s, url: %s", monitor.ID.Hex(), monitor.URL)
 	if strings.ToUpper(monitor.Method) == "GET" {
 		start := time.Now()
 		resp, err := http.Get(monitor.URL)

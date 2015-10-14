@@ -2,7 +2,7 @@ package monitor
 
 import (
 	"github.com/typingincolor/go-galen/monitor/influx"
-	"gopkg.in/inconshreveable/log15.v2"
+	"log"
 )
 
 // Saver saves a result
@@ -24,7 +24,7 @@ func (consolesaver *consolesaver) Save() <-chan struct{} {
 
 	go func() {
 		for monitor := range consolesaver.monitorchan {
-			logger.Debug("saving", log15.Ctx{"status_code": monitor.StatusCode})
+			log.Printf("saving status_code: %d", monitor.StatusCode)
 		}
 		stopchan <- struct{}{}
 	}()
@@ -47,13 +47,13 @@ func (influxsaver *influxsaver) Save() <-chan struct{} {
 
 // ConsoleSaver - write the output of a check to the console
 func ConsoleSaver(monitorchan <-chan Result) Saver {
-	logger.Info("Using ConsoleSaver")
+	log.Println("Using ConsoleSaver")
 	return &consolesaver{monitorchan: monitorchan}
 }
 
 // InfluxSaver - save result to influxdb
 func InfluxSaver(monitorchan <-chan Result, hostname string, port int) Saver {
-	logger.Info("Using InfluxSaver")
+	log.Println("Using InfluxSaver")
 	repo := influx.HealthCheckRepo(hostname, port)
 
 	return &influxsaver{monitorchan: monitorchan, repo: repo}

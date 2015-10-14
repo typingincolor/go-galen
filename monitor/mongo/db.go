@@ -1,12 +1,14 @@
 package mongo
 
 import (
-	"gopkg.in/inconshreveable/log15.v2"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	"log"
 )
 
-var logger = log15.New(log15.Ctx{"module": "mongo"})
+func init() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+}
 
 type db struct {
 	host    string
@@ -28,14 +30,14 @@ type Database interface {
 
 func (d *db) dial() error {
 	var err error
-	logger.Info("dialing mongodb", log15.Ctx{"mongo_host": d.host})
+	log.Println("dialing mongodb: ", d.host)
 	d.session, err = mgo.Dial(d.host)
 	return err
 }
 
 func (d *db) Close() {
 	d.session.Close()
-	logger.Info("closed mongodb connection")
+	log.Println("closed mongodb connection")
 }
 
 func (d *db) GetMonitors() ([]HealthCheck, error) {
